@@ -53,7 +53,7 @@ export function CTFLogo({ size = 'md', showText = true, className }: CTFLogoProp
                         'text-gradient-red',
                     )}
                 >
-                    DIGIYOK
+                    BERLATIH
                 </span>
             )}
         </div>

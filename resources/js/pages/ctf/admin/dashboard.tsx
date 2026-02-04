@@ -12,14 +12,15 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { CTFAdminLayout } from '@/layouts/ctf-admin-layout';
 import { StatCard } from '@/components/stat-card';
 import { CategoryBadge } from '@/components/category-badge';
-import { mockDashboardStats, mockSubmissions, mockScoreboard } from '@/lib/mock-data';
+import { DashboardStats, Submission, Team, ScoreboardEntry } from '@/types/ctf';
 
-dayjs.extend(relativeTime);
+interface AdminDashboardProps {
+    stats: DashboardStats;
+    recentSubmissions: (Submission & { teamName: string; challengeTitle: string })[];
+    topTeams: ScoreboardEntry[];
+}
 
-export default function AdminDashboard() {
-    const stats = mockDashboardStats;
-    const recentSubmissions = mockSubmissions.slice(-10).reverse();
-    const topTeams = mockScoreboard.slice(0, 5);
+export default function AdminDashboard({ stats, recentSubmissions, topTeams }: AdminDashboardProps) {
 
     return (
         <CTFAdminLayout title="Dashboard" currentPath="/ctf/admin/dashboard">
@@ -147,10 +148,7 @@ export default function AdminDashboard() {
                         <TrendingUp className="h-5 w-5 text-primary" />
                     </div>
                     <p className="mt-2 text-2xl font-bold text-primary">
-                        {Math.round(
-                            mockScoreboard.reduce((sum, t) => sum + t.totalScore, 0) /
-                                mockScoreboard.length,
-                        )}
+                        {stats.averageScore || 0}
                     </p>
                 </div>
                 <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
@@ -159,7 +157,7 @@ export default function AdminDashboard() {
                         <Users className="h-5 w-5 text-blue-400" />
                     </div>
                     <p className="mt-2 text-2xl font-bold text-blue-400">
-                        {(stats.totalUsers / stats.totalTeams).toFixed(1)}
+                        {stats.totalTeams > 0 ? (stats.totalUsers / stats.totalTeams).toFixed(1) : '0'}
                     </p>
                 </div>
             </div>

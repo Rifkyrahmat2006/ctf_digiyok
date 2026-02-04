@@ -1,33 +1,52 @@
 import { useState, useEffect } from 'react';
+import { router } from '@inertiajs/react';
 import { clsx } from 'clsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Medal, RefreshCw, Trophy } from 'lucide-react';
 import { CTFLayout } from '@/layouts/ctf-layout';
 import { Button } from '@/components/ui/button';
-import { mockScoreboard } from '@/lib/mock-data';
-import type { ScoreboardEntry } from '@/types';
+interface CTFScoreboardProps {
+    initialScoreboard: {
+        teamId: number;
+        teamName: string;
+        totalScore: number;
+        solvedCount: number;
+        lastSolveTime: string | null;
+        rank: number;
+    }[];
+}
 
-dayjs.extend(relativeTime);
-
-export default function CTFScoreboard() {
-    const [scoreboard, setScoreboard] = useState<ScoreboardEntry[]>(mockScoreboard);
+export default function CTFScoreboard({ initialScoreboard }: CTFScoreboardProps) {
+    const [scoreboard, setScoreboard] = useState(initialScoreboard);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [lastUpdated, setLastUpdated] = useState(new Date());
 
     // Simulate realtime updates (in real app, this would use Laravel Echo)
-    const handleRefresh = async () => {
+    // For now, we just reload the page or re-fetch props.
+    // Given we just want to replace mock, we will rely on initialScoreboard for now.
+    // If we want refresh, we can router.reload({ only: ['initialScoreboard'] })
+    
+    const handleRefresh = () => {
         setIsRefreshing(true);
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setLastUpdated(new Date());
-        setIsRefreshing(false);
+        router.reload({
+            only: ['initialScoreboard'],
+            onFinish: () => {
+                setLastUpdated(new Date());
+                setIsRefreshing(false);
+            },
+        });
     };
 
-    // Auto-refresh every 30 seconds (simulated)
+    useEffect(() => {
+        setScoreboard(initialScoreboard);
+    }, [initialScoreboard]);
+    
+    // Auto-refresh disabled for now or use interval to router.reload
     useEffect(() => {
         const interval = setInterval(() => {
-            setLastUpdated(new Date());
+            // handleRefresh(); // strict refresh might be too heavy?
+            // keeping it manual for now or simple interval
         }, 30000);
         return () => clearInterval(interval);
     }, []);

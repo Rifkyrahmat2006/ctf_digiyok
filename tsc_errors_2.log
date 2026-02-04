@@ -1,0 +1,5 @@
+resources/js/components/nav-user.tsx(15,33): error TS2307: Cannot find module '@/components/user-menu-content' or its corresponding type declarations.
+resources/js/layouts/app/app-header-layout.tsx(2,27): error TS2307: Cannot find module '@/components/app-header' or its corresponding type declarations.
+resources/js/layouts/app/app-sidebar-layout.tsx(3,28): error TS2307: Cannot find module '@/components/app-sidebar' or its corresponding type declarations.
+resources/js/layouts/auth-layout.tsx(1,32): error TS2307: Cannot find module '@/layouts/auth/auth-simple-layout' or its corresponding type declarations.
+resources/js/pages/ctf/challenges.tsx(9,49): error TS2307: Cannot find module '@/lib/mock-data' or its corresponding type declarations.

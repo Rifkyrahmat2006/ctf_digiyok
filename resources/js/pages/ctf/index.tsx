@@ -1,12 +1,14 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowRight, Flag, Shield, Trophy, Users } from 'lucide-react';
 import { CTFLogo } from '@/components/ctf-logo';
 import { Button } from '@/components/ui/button';
 
 export default function CTFLanding() {
+    const { auth } = usePage<{ auth: { user: { role: string } | null } }>().props;
+
     return (
         <div className="dark min-h-screen bg-background bg-gradient-dark bg-pattern-grid">
-            <Head title="Welcome to DIGIYOK CTF" />
+            <Head title="Welcome to BERLATIH CTF" />
 
             {/* Navbar */}
             <header className="border-b border-border/50 bg-background/80 backdrop-blur">
@@ -19,9 +21,21 @@ export default function CTFLanding() {
                         >
                             Scoreboard
                         </Link>
-                        <Button asChild>
-                            <Link href="/ctf/login">Login</Link>
-                        </Button>
+                        {auth.user ? (
+                            auth.user.role === 'admin' ? (
+                                <Button asChild>
+                                    <Link href="/ctf/admin/dashboard">Admin Dashboard</Link>
+                                </Button>
+                            ) : (
+                                <Button asChild>
+                                    <Link href="/ctf/challenges">Competition Area</Link>
+                                </Button>
+                            )
+                        ) : (
+                            <Button asChild>
+                                <Link href="/ctf/login">Login</Link>
+                            </Button>
+                        )}
                     </div>
                 </nav>
             </header>
@@ -37,7 +51,7 @@ export default function CTFLanding() {
 
                     {/* Title */}
                     <h1 className="text-5xl font-bold tracking-tight text-foreground md:text-7xl">
-                        <span className="text-gradient-red">DIGIYOK</span> CTF
+                        <span className="text-gradient-red">BERLATIH</span> CTF
                         <br />
                         <span className="text-muted-foreground">2026</span>
                     </h1>
@@ -138,7 +152,7 @@ export default function CTFLanding() {
             {/* Footer */}
             <footer className="border-t border-border py-8">
                 <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-                    <p>© 2026 DIGIYOK CTF Platform. All rights reserved.</p>
+                    <p>© 2026 BERLATIH CTF Platform. All rights reserved.</p>
                 </div>
             </footer>
         </div>

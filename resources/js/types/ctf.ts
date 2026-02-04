@@ -6,6 +6,7 @@ export type UserRole = 'admin' | 'participant';
 
 export interface CTFUser {
     id: number;
+    name: string;
     username: string;
     email: string;
     role: UserRole;
@@ -71,6 +72,7 @@ export interface DashboardStats {
     totalSubmissions: number;
     correctSubmissions: number;
     publishedChallenges: number;
+    averageScore: number;
 }
 
 // Category color mapping

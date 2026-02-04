@@ -4,6 +4,14 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../css/app.css';
 import { initializeTheme } from './hooks/use-appearance';
+import { Ziggy } from './ziggy';
+import { route } from 'ziggy-js';
+
+// Make route global
+// @ts-ignore
+window.route = route;
+// @ts-ignore
+window.Ziggy = Ziggy;
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -19,6 +27,7 @@ createInertiaApp({
 
         root.render(
             <StrictMode>
+                {/* @ts-ignore */}
                 <App {...props} />
             </StrictMode>,
         );

@@ -1,0 +1,27 @@
+resources/js/components/app-header.tsx(34,10): error TS2305: Module '"@/routes"' has no exported member 'dashboard'.
+resources/js/components/app-sidebar.tsx(15,10): error TS2305: Module '"@/routes"' has no exported member 'dashboard'.
+resources/js/components/delete-user.tsx(3,31): error TS2307: Cannot find module '@/actions/App/Http/Controllers/Settings/ProfileController' or its corresponding type declarations.
+resources/js/components/user-menu-content.tsx(12,22): error TS2307: Cannot find module '@/routes/profile' or its corresponding type declarations.
+resources/js/layouts/auth/auth-card-layout.tsx(11,10): error TS2305: Module '"@/routes"' has no exported member 'home'.
+resources/js/layouts/auth/auth-simple-layout.tsx(3,10): error TS2305: Module '"@/routes"' has no exported member 'home'.
+resources/js/layouts/auth/auth-split-layout.tsx(3,10): error TS2305: Module '"@/routes"' has no exported member 'home'.
+resources/js/layouts/settings/layout.tsx(8,40): error TS2307: Cannot find module '@/routes/appearance' or its corresponding type declarations.
+resources/js/layouts/settings/layout.tsx(9,22): error TS2307: Cannot find module '@/routes/profile' or its corresponding type declarations.
+resources/js/layouts/settings/layout.tsx(10,10): error TS2614: Module '"@/routes/two-factor"' has no exported member 'show'. Did you mean to use 'import show from "@/routes/two-factor"' instead?
+resources/js/layouts/settings/layout.tsx(11,38): error TS2307: Cannot find module '@/routes/user-password' or its corresponding type declarations.
+resources/js/lib/mock-data.ts(112,5): error TS2741: Property 'name' is missing in type '{ id: number; username: string; email: string; role: "admin"; teamId: null; createdAt: string; }' but required in type 'CTFUser'.
+resources/js/lib/mock-data.ts(120,5): error TS2741: Property 'name' is missing in type '{ id: number; username: string; email: string; role: "participant"; teamId: number; teamName: string; createdAt: string; }' but required in type 'CTFUser'.
+resources/js/lib/mock-data.ts(129,5): error TS2741: Property 'name' is missing in type '{ id: number; username: string; email: string; role: "participant"; teamId: number; teamName: string; createdAt: string; }' but required in type 'CTFUser'.
+resources/js/lib/mock-data.ts(138,5): error TS2741: Property 'name' is missing in type '{ id: number; username: string; email: string; role: "participant"; teamId: number; teamName: string; createdAt: string; }' but required in type 'CTFUser'.
+resources/js/lib/mock-data.ts(147,5): error TS2741: Property 'name' is missing in type '{ id: number; username: string; email: string; role: "participant"; teamId: number; teamName: string; createdAt: string; }' but required in type 'CTFUser'.
+resources/js/lib/mock-data.ts(413,14): error TS2741: Property 'averageScore' is missing in type '{ totalTeams: number; totalUsers: number; totalChallenges: number; totalSubmissions: number; correctSubmissions: number; publishedChallenges: number; }' but required in type 'DashboardStats'.
+resources/js/pages/ctf/admin/submissions/index.tsx(194,37): error TS2322: Type 'string | null' is not assignable to type 'string | UrlMethodPair | undefined'.
+  Type 'null' is not assignable to type 'string | UrlMethodPair | undefined'.
+resources/js/pages/dashboard.tsx(4,10): error TS2305: Module '"@/routes"' has no exported member 'dashboard'.
+resources/js/pages/settings/appearance.tsx(6,40): error TS2307: Cannot find module '@/routes/appearance' or its corresponding type declarations.
+resources/js/pages/settings/password.tsx(4,32): error TS2307: Cannot find module '@/actions/App/Http/Controllers/Settings/PasswordController' or its corresponding type declarations.
+resources/js/pages/settings/password.tsx(12,22): error TS2307: Cannot find module '@/routes/user-password' or its corresponding type declarations.
+resources/js/pages/settings/profile.tsx(3,31): error TS2307: Cannot find module '@/actions/App/Http/Controllers/Settings/ProfileController' or its corresponding type declarations.
+resources/js/pages/settings/profile.tsx(12,22): error TS2307: Cannot find module '@/routes/profile' or its corresponding type declarations.
+resources/js/pages/settings/two-factor.tsx(12,27): error TS2614: Module '"@/routes/two-factor"' has no exported member 'show'. Did you mean to use 'import show from "@/routes/two-factor"' instead?
+resources/js/pages/welcome.tsx(2,10): error TS2305: Module '"@/routes"' has no exported member 'dashboard'.

@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { clsx } from 'clsx';
 import {
     ChevronLeft,
@@ -10,9 +10,12 @@ import {
     Settings,
     Users,
     UsersRound,
+    X,
+    CheckCircle,
+    AlertCircle,
 } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CTFLogo } from '@/components/ctf-logo';
 import { Button } from '@/components/ui/button';
 
@@ -37,10 +40,37 @@ interface CTFAdminLayoutProps extends PropsWithChildren {
 
 export function CTFAdminLayout({ children, title, currentPath }: CTFAdminLayoutProps) {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const { flash } = usePage<{ flash?: { success?: string; error?: string } }>().props;
+    const [showFlash, setShowFlash] = useState(false);
+    const safeFlash = flash || {};
+
+    useEffect(() => {
+        if (safeFlash.success || safeFlash.error) {
+            setShowFlash(true);
+            const timer = setTimeout(() => setShowFlash(false), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
 
     return (
         <div className="dark flex min-h-screen bg-background">
             <Head title={title ? `${title} - Admin` : 'Admin'} />
+
+            {/* Flash Notification */}
+            {showFlash && (safeFlash.success || safeFlash.error) && (
+                <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-top-2 fade-in">
+                    <div className={clsx(
+                        "flex items-center gap-3 rounded-lg border px-4 py-3 shadow-lg",
+                        safeFlash.success ? "bg-green-500/10 border-green-500/20 text-green-500" : "bg-red-500/10 border-red-500/20 text-red-500"
+                    )}>
+                        {safeFlash.success ? <CheckCircle className="h-5 w-5" /> : <AlertCircle className="h-5 w-5" />}
+                        <p className="text-sm font-medium">{safeFlash.success || safeFlash.error}</p>
+                        <button onClick={() => setShowFlash(false)} className="ml-2 hover:opacity-70">
+                            <X className="h-4 w-4" />
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* Sidebar */}
             <aside
@@ -88,9 +118,13 @@ export function CTFAdminLayout({ children, title, currentPath }: CTFAdminLayoutP
                             'w-full justify-start gap-3 text-red-400 hover:bg-red-500/10 hover:text-red-400',
                             sidebarCollapsed && 'justify-center px-2',
                         )}
+                        // Link for Logout - assuming generic logout route
+                         asChild
                     >
-                        <LogOut className="h-5 w-5" />
-                        {!sidebarCollapsed && <span>Logout</span>}
+                        <Link href="/logout" method="post" as="button">
+                            <LogOut className="h-5 w-5" />
+                            {!sidebarCollapsed && <span>Logout</span>}
+                        </Link>
                     </Button>
                 </div>
 

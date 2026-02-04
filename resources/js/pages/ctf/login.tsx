@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { Eye, EyeOff, Loader2, Lock, User } from 'lucide-react';
 import { CTFLogo } from '@/components/ctf-logo';
@@ -8,20 +8,17 @@ import { Label } from '@/components/ui/label';
 
 export default function CTFLogin() {
     const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [formData, setFormData] = useState({
+    
+    const { data, setData, post, processing, errors, reset } = useForm({
         username: '',
         password: '',
     });
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
-        // Simulate loading - in real app this would be Inertia form submission
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        setIsLoading(false);
-        // Demo: just show alert
-        alert('Login functionality not implemented in frontend-only mode');
+        post('/login', {
+            onFinish: () => reset('password'),
+        });
     };
 
     return (
@@ -67,14 +64,17 @@ export default function CTFLogin() {
                                             id="username"
                                             type="text"
                                             placeholder="Enter your username"
-                                            value={formData.username}
-                                            onChange={(e) =>
-                                                setFormData({ ...formData, username: e.target.value })
-                                            }
+                                            value={data.username}
+                                            onChange={(e) => setData('username', e.target.value)}
                                             className="pl-10"
                                             required
+                                            autoFocus
+                                            autoComplete="username"
                                         />
                                     </div>
+                                    {errors.username && (
+                                        <p className="text-sm text-destructive">{errors.username}</p>
+                                    )}
                                 </div>
 
                                 {/* Password */}
@@ -86,12 +86,11 @@ export default function CTFLogin() {
                                             id="password"
                                             type={showPassword ? 'text' : 'password'}
                                             placeholder="Enter your password"
-                                            value={formData.password}
-                                            onChange={(e) =>
-                                                setFormData({ ...formData, password: e.target.value })
-                                            }
+                                            value={data.password}
+                                            onChange={(e) => setData('password', e.target.value)}
                                             className="pl-10 pr-10"
                                             required
+                                            autoComplete="current-password"
                                         />
                                         <button
                                             type="button"
@@ -105,6 +104,9 @@ export default function CTFLogin() {
                                             )}
                                         </button>
                                     </div>
+                                    {errors.password && (
+                                        <p className="text-sm text-destructive">{errors.password}</p>
+                                    )}
                                 </div>
                             </div>
 
@@ -113,9 +115,9 @@ export default function CTFLogin() {
                                 type="submit"
                                 className="mt-6 w-full"
                                 size="lg"
-                                disabled={isLoading}
+                                disabled={processing}
                             >
-                                {isLoading ? (
+                                {processing ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                         Signing in...

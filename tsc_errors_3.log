@@ -1,0 +1,8 @@
+resources/js/layouts/app-layout.tsx(1,31): error TS2307: Cannot find module '@/layouts/app/app-sidebar-layout' or its corresponding type declarations.
+resources/js/pages/auth/confirm-password.tsx(7,24): error TS2307: Cannot find module '@/layouts/auth-layout' or its corresponding type declarations.
+resources/js/pages/auth/forgot-password.tsx(9,24): error TS2307: Cannot find module '@/layouts/auth-layout' or its corresponding type declarations.
+resources/js/pages/auth/login.tsx(9,24): error TS2307: Cannot find module '@/layouts/auth-layout' or its corresponding type declarations.
+resources/js/pages/auth/register.tsx(8,24): error TS2307: Cannot find module '@/layouts/auth-layout' or its corresponding type declarations.
+resources/js/pages/auth/reset-password.tsx(7,24): error TS2307: Cannot find module '@/layouts/auth-layout' or its corresponding type declarations.
+resources/js/pages/auth/two-factor-challenge.tsx(13,24): error TS2307: Cannot find module '@/layouts/auth-layout' or its corresponding type declarations.
+resources/js/pages/auth/verify-email.tsx(6,24): error TS2307: Cannot find module '@/layouts/auth-layout' or its corresponding type declarations.

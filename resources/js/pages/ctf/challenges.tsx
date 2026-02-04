@@ -6,7 +6,6 @@ import { ChallengeModal } from '@/components/challenge-modal';
 import { CategoryBadge } from '@/components/category-badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { mockChallenges, mockCurrentTeam } from '@/lib/mock-data';
 import type { Challenge, ChallengeCategory } from '@/types';
 
 const categories: (ChallengeCategory | 'All')[] = [
@@ -18,18 +17,25 @@ const categories: (ChallengeCategory | 'All')[] = [
     'Misc',
 ];
 
-export default function CTFChallenges() {
+interface CTFChallengesProps {
+    challenges: Challenge[];
+}
+
+export default function CTFChallenges({ challenges }: CTFChallengesProps) {
     const [selectedCategory, setSelectedCategory] = useState<ChallengeCategory | 'All'>('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Filter only published challenges
-    const publishedChallenges = mockChallenges.filter((c) => c.isPublished);
-
     // Filter challenges based on category and search
+    // challenges prop already contains only published challenges for participants usually, 
+    // or we check isPublished. Controller should filter published.
+    // Assuming controller returns: Challenge::where('is_published', true)...
+    
+    // Note: Controller returns list of challenges.
+    
     const filteredChallenges = useMemo(() => {
-        return publishedChallenges.filter((challenge) => {
+        return challenges.filter((challenge) => {
             const matchesCategory =
                 selectedCategory === 'All' || challenge.category === selectedCategory;
             const matchesSearch = challenge.title
@@ -37,7 +43,7 @@ export default function CTFChallenges() {
                 .includes(searchQuery.toLowerCase());
             return matchesCategory && matchesSearch;
         });
-    }, [publishedChallenges, selectedCategory, searchQuery]);
+    }, [challenges, selectedCategory, searchQuery]);
 
     // Group challenges by category for display
     const challengesByCategory = useMemo(() => {
@@ -66,8 +72,8 @@ export default function CTFChallenges() {
     };
 
     // Calculate team stats
-    const solvedCount = publishedChallenges.filter((c) => c.isSolved).length;
-    const totalScore = publishedChallenges
+    const solvedCount = challenges.filter((c) => c.isSolved).length;
+    const totalScore = challenges
         .filter((c) => c.isSolved)
         .reduce((sum, c) => sum + c.score, 0);
 
@@ -89,7 +95,7 @@ export default function CTFChallenges() {
                             <p className="text-xl font-bold">
                                 {totalScore}{' '}
                                 <span className="text-sm font-normal text-muted-foreground">
-                                    pts ({solvedCount}/{publishedChallenges.length} solved)
+                                    pts ({solvedCount}/{challenges.length} solved)
                                 </span>
                             </p>
                         </div>

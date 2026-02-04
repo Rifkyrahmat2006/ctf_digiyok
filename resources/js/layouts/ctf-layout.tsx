@@ -15,7 +15,7 @@ export function CTFLayout({ children, title, currentPath }: CTFLayoutProps) {
             <main className="container mx-auto px-4 py-8">{children}</main>
             <footer className="border-t border-border py-6">
                 <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-                    <p>© 2026 DIGIYOK CTF Platform. All rights reserved.</p>
+                    <p>© 2026 BERLATIH CTF Platform. All rights reserved.</p>
                 </div>
             </footer>
         </div>
