@@ -29,6 +29,7 @@ class ScoreboardController extends Controller
 
         return Inertia::render('ctf/scoreboard', [
             'initialScoreboard' => $scoreboard,
+            'websocketUrl' => config('services.websocket.public_url'),
         ]);
     }
 }

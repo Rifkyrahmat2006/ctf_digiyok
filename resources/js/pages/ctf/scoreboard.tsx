@@ -1,32 +1,70 @@
 import { useState, useEffect } from 'react';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { clsx } from 'clsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Medal, RefreshCw, Trophy } from 'lucide-react';
+import { Medal, RefreshCw, Trophy, Wifi, WifiOff } from 'lucide-react';
+import { io, Socket } from 'socket.io-client';
+
 dayjs.extend(relativeTime);
+
 import { CTFLayout } from '@/layouts/ctf-layout';
 import { Button } from '@/components/ui/button';
-interface CTFScoreboardProps {
-    initialScoreboard: {
-        teamId: number;
-        teamName: string;
-        totalScore: number;
-        solvedCount: number;
-        lastSolveTime: string | null;
-        rank: number;
-    }[];
+
+interface ScoreboardEntry {
+    teamId: number;
+    teamName: string;
+    totalScore: number;
+    solvedCount: number;
+    lastSolveTime: string | null;
+    rank: number;
 }
 
-export default function CTFScoreboard({ initialScoreboard }: CTFScoreboardProps) {
+interface CTFScoreboardProps {
+    initialScoreboard: ScoreboardEntry[];
+    websocketUrl?: string;
+}
+
+export default function CTFScoreboard({ initialScoreboard, websocketUrl }: CTFScoreboardProps) {
     const [scoreboard, setScoreboard] = useState(initialScoreboard);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [lastUpdated, setLastUpdated] = useState(new Date());
+    const [isConnected, setIsConnected] = useState(false);
 
-    // Simulate realtime updates (in real app, this would use Laravel Echo)
-    // For now, we just reload the page or re-fetch props.
-    // Given we just want to replace mock, we will rely on initialScoreboard for now.
-    // If we want refresh, we can router.reload({ only: ['initialScoreboard'] })
+    // Connect to Node.js WebSocket server via Socket.io
+    useEffect(() => {
+        if (!websocketUrl) {
+            console.log('WebSocket URL not configured, realtime updates disabled');
+            return;
+        }
+
+        const socket: Socket = io(websocketUrl, {
+            transports: ['websocket', 'polling'],
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000,
+        });
+
+        socket.on('connect', () => {
+            console.log('Connected to WebSocket server');
+            setIsConnected(true);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from WebSocket server');
+            setIsConnected(false);
+        });
+
+        socket.on('scoreboard.updated', (event: { scoreboard: ScoreboardEntry[]; updated_at: string }) => {
+            console.log('Scoreboard updated via WebSocket:', event);
+            setScoreboard(event.scoreboard);
+            setLastUpdated(new Date(event.updated_at));
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [websocketUrl]);
     
     const handleRefresh = () => {
         setIsRefreshing(true);
@@ -42,15 +80,6 @@ export default function CTFScoreboard({ initialScoreboard }: CTFScoreboardProps)
     useEffect(() => {
         setScoreboard(initialScoreboard);
     }, [initialScoreboard]);
-    
-    // Auto-refresh disabled for now or use interval to router.reload
-    useEffect(() => {
-        const interval = setInterval(() => {
-            // handleRefresh(); // strict refresh might be too heavy?
-            // keeping it manual for now or simple interval
-        }, 30000);
-        return () => clearInterval(interval);
-    }, []);
 
     const getRankStyle = (rank: number) => {
         switch (rank) {

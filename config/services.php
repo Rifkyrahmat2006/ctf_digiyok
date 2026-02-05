@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'websocket' => [
+        'url' => env('WEBSOCKET_SERVER_URL'),
+        'public_url' => env('VITE_WEBSOCKET_URL'),
+        'secret' => env('WEBSOCKET_API_SECRET'),
+    ],
+
 ];

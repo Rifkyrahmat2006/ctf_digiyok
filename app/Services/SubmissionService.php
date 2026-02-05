@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
-use App\Events\ScoreboardUpdated;
 use App\Models\Challenge;
 use App\Models\Submission;
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 
 class SubmissionService
@@ -86,7 +87,7 @@ class SubmissionService
         ]);
 
         if ($isCorrect) {
-            // Broadcast scoreboard update
+            // Broadcast scoreboard update to Node.js WebSocket server
             $this->broadcastScoreboardUpdate();
 
             return [
@@ -104,12 +105,30 @@ class SubmissionService
     }
 
     /**
-     * Broadcast scoreboard update event
+     * Broadcast scoreboard update to external Node.js WebSocket server
      */
     protected function broadcastScoreboardUpdate(): void
     {
-        $scoreboard = $this->scoreboardService->getScoreboard();
-        
-        broadcast(new ScoreboardUpdated($scoreboard->toArray()))->toOthers();
+        $websocketUrl = config('services.websocket.url');
+        $apiSecret = config('services.websocket.secret');
+
+        if (!$websocketUrl) {
+            Log::warning('WebSocket server URL not configured. Skipping realtime broadcast.');
+            return;
+        }
+
+        try {
+            $scoreboard = $this->scoreboardService->getScoreboard();
+            
+            Http::withToken($apiSecret)
+                ->timeout(5)
+                ->post("{$websocketUrl}/broadcast/scoreboard", [
+                    'scoreboard' => $scoreboard->toArray(),
+                    'updated_at' => now()->toIso8601String(),
+                ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to broadcast scoreboard update: ' . $e->getMessage());
+        }
     }
 }
+
