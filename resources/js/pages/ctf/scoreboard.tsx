@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Medal, RefreshCw, Trophy } from 'lucide-react';
+dayjs.extend(relativeTime);
 import { CTFLayout } from '@/layouts/ctf-layout';
 import { Button } from '@/components/ui/button';
 interface CTFScoreboardProps {
