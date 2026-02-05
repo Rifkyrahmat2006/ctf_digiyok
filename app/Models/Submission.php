@@ -15,6 +15,7 @@ class Submission extends Model
         'challenge_id',
         'user_id',
         'submitted_flag_hash',
+        'submitted_flag', // Raw submitted flag
         'is_correct',
     ];
 

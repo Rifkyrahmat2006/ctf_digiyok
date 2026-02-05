@@ -131,6 +131,9 @@ export default function AdminChallenges({ challenges }: AdminChallengesProps) {
                                     Score
                                 </th>
                                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                                    Flag
+                                </th>
+                                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                                     Status
                                 </th>
                                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
@@ -162,6 +165,9 @@ export default function AdminChallenges({ challenges }: AdminChallengesProps) {
                                         </td>
                                         <td className="px-4 py-3 font-mono">
                                             {challenge.score} pts
+                                        </td>
+                                        <td className="px-4 py-3 font-mono text-xs text-muted-foreground break-all max-w-[200px]">
+                                            {challenge.flag || 'N/A'}
                                         </td>
                                         <td className="px-4 py-3">
                                             <span
@@ -253,23 +259,22 @@ function CreateChallengeModal({
     onOpenChange: (open: boolean) => void;
     challenges: Challenge[];
 }) {
-    const { data, setData, post, processing, errors, reset, transform } = useForm({
+    const { data, setData, processing, errors, reset } = useForm({
         title: '',
         description: '',
         category: 'Web',
         score: 100,
         flag: '',
-        dependency_id: 'null',
+        dependency_id: 'none' as string,
         is_published: true,
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        transform((data) => ({
+        router.post(route('ctf.admin.challenges.store'), {
             ...data,
-            dependency_id: data.dependency_id === 'null' ? null : data.dependency_id,
-        }));
-        post(route('ctf.admin.challenges.store'), {
+            dependency_id: data.dependency_id === 'none' ? null : parseInt(data.dependency_id),
+        }, {
             onSuccess: () => {
                 reset();
                 onOpenChange(false);
@@ -352,7 +357,7 @@ function CreateChallengeModal({
                                     <SelectValue placeholder="None" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="null">None</SelectItem>
+                                    <SelectItem value="none">None</SelectItem>
                                     {challenges.map((c) => (
                                         <SelectItem key={c.id} value={c.id.toString()}>
                                             {c.title}
@@ -415,23 +420,22 @@ function EditChallengeModal({
     onOpenChange: (open: boolean) => void;
     challenges: Challenge[];
 }) {
-    const { data, setData, put, processing, errors, transform } = useForm({
+    const { data, setData, processing, errors } = useForm({
         title: challenge.title,
         description: challenge.description,
         category: challenge.category,
         score: challenge.score,
-        flag: '', // Empty by default, only set if changing
-        dependency_id: challenge.dependencyId?.toString() || 'null',
+        flag: challenge.flag || '', // Use raw flag if available
+        dependency_id: challenge.dependencyId?.toString() || 'none',
         is_published: challenge.isPublished,
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        transform((data) => ({
+        router.put(route('ctf.admin.challenges.update', challenge.id), {
             ...data,
-            dependency_id: data.dependency_id === 'null' ? null : data.dependency_id,
-        }));
-        put(route('ctf.admin.challenges.update', challenge.id), {
+            dependency_id: data.dependency_id === 'none' ? null : parseInt(data.dependency_id),
+        }, {
             onSuccess: () => onOpenChange(false),
         });
     };
@@ -507,7 +511,7 @@ function EditChallengeModal({
                                     <SelectValue placeholder="None" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="null">None</SelectItem>
+                                    <SelectItem value="none">None</SelectItem>
                                     {challenges
                                         .filter((c) => c.id !== challenge.id) // Don't depend on self
                                         .map((c) => (

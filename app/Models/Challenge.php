@@ -17,6 +17,7 @@ class Challenge extends Model
         'category',
         'score',
         'flag_hash',
+        'flag', // Raw flag for admin view
         'dependency_id',
         'is_published',
     ];

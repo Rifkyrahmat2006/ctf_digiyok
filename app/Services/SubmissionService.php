@@ -83,13 +83,19 @@ class SubmissionService
             'challenge_id' => $challenge->id,
             'user_id' => $user->id,
             'submitted_flag_hash' => $this->flagService->hashFlag($flag),
+            'submitted_flag' => $flag, // Store raw flag
             'is_correct' => $isCorrect,
         ]);
 
         if ($isCorrect) {
             // Broadcast scoreboard update to Node.js WebSocket server
             $this->broadcastScoreboardUpdate();
+        }
 
+        // Broadcast submission to admin panel (regardless of correctness)
+        $this->broadcastSubmission($submission->load(['team', 'challenge', 'user']));
+
+        if ($isCorrect) {
             return [
                 'success' => true,
                 'message' => 'Correct! You earned ' . $challenge->score . ' points.',
@@ -128,6 +134,47 @@ class SubmissionService
                 ]);
         } catch (\Exception $e) {
             Log::error('Failed to broadcast scoreboard update: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Broadcast submission to external Node.js WebSocket server
+     */
+    protected function broadcastSubmission(Submission $submission): void
+    {
+        $websocketUrl = config('services.websocket.url');
+        $apiSecret = config('services.websocket.secret');
+
+        if (!$websocketUrl) {
+            return;
+        }
+
+        try {
+            // Format submission for frontend
+            // Matches the structure expected by AdminSubmissionsProps['submissions']['data'][0]
+            $data = [
+                'id' => $submission->id,
+                'teamName' => $submission->team->name, // Accessor or relationship
+                'challengeTitle' => $submission->challenge->title,
+                'category' => $submission->challenge->category,
+                'isCorrect' => $submission->is_correct,
+                'createdAt' => $submission->created_at->toISOString(),
+                'team_id' => $submission->team_id,
+                'challenge_id' => $submission->challenge_id,
+                'user_id' => $submission->user_id,
+                'submittedFlag' => $submission->submitted_flag, // Broadcast raw flag
+                'submitted_flag_hash' => $submission->submitted_flag_hash,
+                'created_at' => $submission->created_at->toISOString(),
+                'updated_at' => $submission->updated_at->toISOString(),
+            ];
+
+            Http::withToken($apiSecret)
+                ->timeout(2) // Short timeout for this one
+                ->post("{$websocketUrl}/broadcast/submission", [
+                    'submission' => $data,
+                ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to broadcast submission: ' . $e->getMessage());
         }
     }
 }

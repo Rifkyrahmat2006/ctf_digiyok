@@ -16,16 +16,7 @@ class ScoreboardController extends Controller
 
     public function index(Request $request): Response
     {
-        $scoreboard = $this->scoreboardService->getScoreboard()->map(function ($entry) {
-            return [
-                'teamId' => $entry['team_id'],
-                'teamName' => $entry['team_name'],
-                'totalScore' => $entry['total_score'],
-                'solvedCount' => $entry['solved_count'],
-                'lastSolveTime' => $entry['last_solve_time'],
-                'rank' => $entry['rank'],
-            ];
-        });
+        $scoreboard = $this->scoreboardService->getScoreboard();
 
         return Inertia::render('ctf/scoreboard', [
             'initialScoreboard' => $scoreboard,

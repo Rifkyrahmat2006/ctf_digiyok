@@ -43,6 +43,7 @@ export interface Challenge {
     isSolved?: boolean;
     solvedByCount?: number;
     dependencyId?: number | null;
+    flag?: string; // Admin only
     createdAt: string;
 }
 
@@ -53,6 +54,7 @@ export interface Submission {
     challengeId: number;
     challengeTitle: string;
     isCorrect: boolean;
+    submittedFlag?: string; // Admin only
     createdAt: string;
 }
 

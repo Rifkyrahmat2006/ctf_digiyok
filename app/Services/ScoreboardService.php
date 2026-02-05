@@ -19,18 +19,18 @@ class ScoreboardService
             ->get()
             ->map(function (Team $team) {
                 return [
-                    'team_id' => $team->id,
-                    'team_name' => $team->name,
-                    'total_score' => $team->total_score,
-                    'solved_count' => $team->solved_count,
-                    'last_solve_time' => $team->last_solve_time,
-                    'member_count' => $team->member_count,
+                    'teamId' => $team->id,
+                    'teamName' => $team->name,
+                    'totalScore' => $team->total_score,
+                    'solvedCount' => $team->solved_count,
+                    'lastSolveTime' => $team->last_solve_time,
+                    'memberCount' => $team->member_count,
                 ];
             })
-            ->sortByDesc('total_score')
+            ->sortByDesc('totalScore')
             ->sortBy(function ($team) {
                 // Secondary sort by last solve time (earlier is better)
-                return $team['last_solve_time'] ?? '9999-99-99';
+                return $team['lastSolveTime'] ?? '9999-99-99';
             })
             ->values()
             ->map(function ($team, $index) {
@@ -46,7 +46,7 @@ class ScoreboardService
     {
         $scoreboard = $this->getScoreboard();
         
-        $team = $scoreboard->firstWhere('team_id', $teamId);
+        $team = $scoreboard->firstWhere('teamId', $teamId);
         
         return $team['rank'] ?? 0;
     }

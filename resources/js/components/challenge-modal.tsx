@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { clsx } from 'clsx';
 import { CheckCircle2, Flag, Loader2, X } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import type { Challenge } from '@/types';
 import { CategoryBadge } from './category-badge';
 import { ScoreBadge } from './score-badge';
@@ -18,13 +19,17 @@ interface ChallengeModalProps {
     challenge: Challenge | null;
     isOpen: boolean;
     onClose: () => void;
-    onSubmit?: (flag: string) => Promise<boolean | void>;
 }
 
-export function ChallengeModal({ challenge, isOpen, onClose, onSubmit }: ChallengeModalProps) {
+interface SubmitResponse {
+    success: boolean;
+    message: string;
+}
+
+export function ChallengeModal({ challenge, isOpen, onClose }: ChallengeModalProps) {
     const [flag, setFlag] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitResult, setSubmitResult] = useState<'correct' | 'incorrect' | null>(null);
+    const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null);
 
     if (!challenge) return null;
 
@@ -36,16 +41,27 @@ export function ChallengeModal({ challenge, isOpen, onClose, onSubmit }: Challen
         setSubmitResult(null);
 
         try {
-            // Mock submission - in real app this calls the API
-            if (onSubmit) {
-                const result = await onSubmit(flag);
-                setSubmitResult(result ? 'correct' : 'incorrect');
-            } else {
-                // Demo: simulate random result
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                const isCorrect = Math.random() > 0.5;
-                setSubmitResult(isCorrect ? 'correct' : 'incorrect');
+            // Using axios instead of fetch to automatically handle CSRF token
+            const response = await window.axios.post(route('ctf.submissions.store'), {
+                challenge_id: challenge.id,
+                flag: flag.trim(),
+            });
+
+            const data: SubmitResponse = response.data;
+            setSubmitResult(data);
+
+            if (data.success) {
+                // Refresh the page to update isSolved status
+                setTimeout(() => {
+                    router.reload({ only: ['challenges'] });
+                }, 1500);
             }
+        } catch (error: any) {
+            console.error('Submission error:', error);
+            setSubmitResult({
+                success: false,
+                message: error.response?.data?.message || 'Network error. Please try again.',
+            });
         } finally {
             setIsSubmitting(false);
         }
@@ -83,9 +99,9 @@ export function ChallengeModal({ challenge, isOpen, onClose, onSubmit }: Challen
                     </DialogDescription>
                 </DialogHeader>
 
-                {/* Description */}
+                {/* Description with proper overflow handling */}
                 <div className="prose prose-invert max-w-none">
-                    <div className="rounded-lg bg-secondary/50 p-4 font-mono text-sm whitespace-pre-wrap">
+                    <div className="rounded-lg bg-secondary/50 p-4 font-mono text-sm whitespace-pre-wrap break-all overflow-x-auto max-h-[200px] overflow-y-auto">
                         {challenge.description}
                     </div>
                 </div>
@@ -133,20 +149,20 @@ export function ChallengeModal({ challenge, isOpen, onClose, onSubmit }: Challen
                             <div
                                 className={clsx(
                                     'flex items-center gap-2 rounded-lg p-3 text-sm font-medium',
-                                    submitResult === 'correct'
+                                    submitResult.success
                                         ? 'bg-green-500/20 text-green-400'
                                         : 'bg-red-500/20 text-red-400',
                                 )}
                             >
-                                {submitResult === 'correct' ? (
+                                {submitResult.success ? (
                                     <>
                                         <CheckCircle2 className="h-4 w-4" />
-                                        Correct! You earned {challenge.score} points.
+                                        {submitResult.message}
                                     </>
                                 ) : (
                                     <>
                                         <X className="h-4 w-4" />
-                                        Incorrect flag. Try again!
+                                        {submitResult.message}
                                     </>
                                 )}
                             </div>
@@ -165,3 +181,4 @@ export function ChallengeModal({ challenge, isOpen, onClose, onSubmit }: Challen
         </Dialog>
     );
 }
+

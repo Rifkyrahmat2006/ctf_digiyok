@@ -20,7 +20,7 @@ class AdminSubmissionController extends Controller
                 'teamId' => $sub->team_id,
                 'challengeName' => $sub->challenge->title,
                 'userName' => $sub->user->username,
-                'submittedFlag' => 'HIDDEN', // Don't show submitted flags for security in logs if hash is stored
+                'submittedFlag' => $sub->submitted_flag ?? 'N/A', // Show raw flag
                 'isCorrect' => $sub->is_correct,
                 'timestamp' => $sub->created_at->toIso8601String(),
             ]);
@@ -34,6 +34,7 @@ class AdminSubmissionController extends Controller
         return Inertia::render('ctf/admin/submissions/index', [
             'submissions' => $submissions,
             'stats' => $stats,
+            'websocketUrl' => config('services.websocket.public_url'),
         ]);
     }
 }

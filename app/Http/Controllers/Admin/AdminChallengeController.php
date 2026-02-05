@@ -29,6 +29,7 @@ class AdminChallengeController extends Controller
                 'score' => $challenge->score,
                 'isPublished' => $challenge->is_published,
                 'solves' => $challenge->solved_by_count,
+                'flag' => $challenge->flag ?? 'N/A', // Expose raw flag
             ]);
 
         return Inertia::render('ctf/admin/challenges/index', [
@@ -48,9 +49,9 @@ class AdminChallengeController extends Controller
             'is_published' => 'boolean',
         ]);
 
-        // Hash flag
+        // Hash flag but keep raw flag for storage
         $validated['flag_hash'] = $this->flagService->hashFlag($validated['flag']);
-        unset($validated['flag']);
+        // $validated['flag'] is already there, don't unset it
 
         Challenge::create($validated);
 
@@ -71,8 +72,10 @@ class AdminChallengeController extends Controller
 
         if (!empty($validated['flag'])) {
             $validated['flag_hash'] = $this->flagService->hashFlag($validated['flag']);
+            // Keep $validated['flag'] to update raw flag
+        } else {
+             unset($validated['flag']); // Don't wipe existing flag if empty input
         }
-        unset($validated['flag']);
 
         $challenge->update($validated);
 
