@@ -8,7 +8,7 @@ export default function CTFLanding() {
 
     return (
         <div className="dark min-h-screen bg-background bg-gradient-dark bg-pattern-grid">
-            <Head title="Welcome to BERLATIH CTF" />
+            <Head title="Welcome to BERLATIH CTF"/>
 
             {/* Navbar */}
             <header className="border-b border-border/50 bg-background/80 backdrop-blur">
