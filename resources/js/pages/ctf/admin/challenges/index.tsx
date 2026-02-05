@@ -253,18 +253,22 @@ function CreateChallengeModal({
     onOpenChange: (open: boolean) => void;
     challenges: Challenge[];
 }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset, transform } = useForm({
         title: '',
         description: '',
         category: 'Web',
         score: 100,
         flag: '',
-        dependency_id: '',
+        dependency_id: 'null',
         is_published: true,
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+        transform((data) => ({
+            ...data,
+            dependency_id: data.dependency_id === 'null' ? null : data.dependency_id,
+        }));
         post(route('ctf.admin.challenges.store'), {
             onSuccess: () => {
                 reset();
@@ -411,18 +415,22 @@ function EditChallengeModal({
     onOpenChange: (open: boolean) => void;
     challenges: Challenge[];
 }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing, errors, transform } = useForm({
         title: challenge.title,
         description: challenge.description,
         category: challenge.category,
         score: challenge.score,
         flag: '', // Empty by default, only set if changing
-        dependency_id: challenge.dependencyId?.toString() || '',
+        dependency_id: challenge.dependencyId?.toString() || 'null',
         is_published: challenge.isPublished,
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+        transform((data) => ({
+            ...data,
+            dependency_id: data.dependency_id === 'null' ? null : data.dependency_id,
+        }));
         put(route('ctf.admin.challenges.update', challenge.id), {
             onSuccess: () => onOpenChange(false),
         });
