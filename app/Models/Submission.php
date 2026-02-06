@@ -15,8 +15,9 @@ class Submission extends Model
         'challenge_id',
         'user_id',
         'submitted_flag_hash',
-        'submitted_flag', // Raw submitted flag
+        'submitted_flag',
         'is_correct',
+        'correct_submission_key',
     ];
 
     protected $casts = [

@@ -85,15 +85,34 @@ class SubmissionService
         // Check if flag is correct
         $isCorrect = $this->flagService->verifyFlag($flag, $challenge->flag_hash);
 
-        // Create submission record
-        $submission = Submission::create([
+        // Prepare submission data
+        $submissionData = [
             'team_id' => $team->id,
             'challenge_id' => $challenge->id,
             'user_id' => $user->id,
             'submitted_flag_hash' => $this->flagService->hashFlag($flag),
-            'submitted_flag' => $flag, // Store raw flag
+            'submitted_flag' => $flag,
             'is_correct' => $isCorrect,
-        ]);
+        ];
+
+        // If correct, set the unique key to prevent race condition duplicates
+        if ($isCorrect) {
+            $submissionData['correct_submission_key'] = "{$team->id}_{$challenge->id}";
+        }
+
+        // Create submission record with race condition protection
+        try {
+            $submission = Submission::create($submissionData);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Check if it's a duplicate key error (MySQL: 1062, PostgreSQL: 23505)
+            if ($e->errorInfo[1] == 1062 || $e->errorInfo[0] == '23505') {
+                return [
+                    'success' => false,
+                    'message' => 'Your team has already solved this challenge.',
+                ];
+            }
+            throw $e; // Re-throw if it's a different error
+        }
 
         if ($isCorrect) {
             // Broadcast scoreboard update to Node.js WebSocket server
