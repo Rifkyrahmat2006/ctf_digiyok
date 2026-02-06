@@ -17,13 +17,8 @@ use App\Http\Controllers\CTF\WriteupController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Landing Page
-Route::get('/', function () {
-    return redirect()->route('ctf.landing');
-});
-
-// CTF Routes
-Route::prefix('ctf')->name('ctf.')->group(function () {
+// CTF Routes (no /ctf prefix)
+Route::name('ctf.')->group(function () {
     // Public pages
     Route::get('/', fn () => Inertia::render('ctf/index'))->name('landing');
     Route::get('/login', fn () => Inertia::render('ctf/login'))->name('login');
