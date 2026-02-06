@@ -139,7 +139,9 @@ export default function AdminDashboard({ stats, recentSubmissions, topTeams }: A
                         <CheckCircle2 className="h-5 w-5 text-green-500" />
                     </div>
                     <p className="mt-2 text-2xl font-bold text-green-400">
-                        {((stats.correctSubmissions / stats.totalSubmissions) * 100).toFixed(1)}%
+                        {stats.totalSubmissions > 0
+                            ? ((stats.correctSubmissions / stats.totalSubmissions) * 100).toFixed(1)
+                            : '0.0'}%
                     </p>
                 </div>
                 <div className="rounded-xl border border-primary/30 bg-primary/5 p-4">
