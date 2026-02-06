@@ -59,7 +59,7 @@ class AdminChallengeController extends Controller
         // Handle file upload
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
-            $validated['file_path'] = $file->store('challenges', 'public');
+            $validated['file_path'] = $file->storeAs('challenges', $file->getClientOriginalName(), 'public');
         }
 
         unset($validated['attachment']); // Remove from validated array before create
@@ -102,7 +102,7 @@ class AdminChallengeController extends Controller
                 Storage::disk('public')->delete($challenge->file_path);
             }
             $file = $request->file('attachment');
-            $validated['file_path'] = $file->store('challenges', 'public');
+            $validated['file_path'] = $file->storeAs('challenges', $file->getClientOriginalName(), 'public');
         }
 
         unset($validated['attachment'], $validated['remove_file']);
