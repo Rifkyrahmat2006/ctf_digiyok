@@ -18,6 +18,7 @@ class Challenge extends Model
         'score',
         'flag_hash',
         'flag', // Raw flag for admin view
+        'file_path',
         'dependency_id',
         'is_published',
     ];
@@ -26,6 +27,17 @@ class Challenge extends Model
         'score' => 'integer',
         'is_published' => 'boolean',
     ];
+
+    /**
+     * Get the public URL for the challenge file
+     */
+    public function getFileUrlAttribute(): ?string
+    {
+        if (!$this->file_path) {
+            return null;
+        }
+        return asset('storage/' . $this->file_path);
+    }
 
     /**
      * Challenge categories

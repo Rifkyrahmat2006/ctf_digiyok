@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { clsx } from 'clsx';
-import { CheckCircle2, Flag, Loader2, X } from 'lucide-react';
+import { CheckCircle2, Download, Flag, Loader2, X } from 'lucide-react';
 import { router } from '@inertiajs/react';
 import type { Challenge } from '@/types';
 import { CategoryBadge } from './category-badge';
@@ -114,6 +114,19 @@ export function ChallengeModal({ challenge, isOpen, onClose }: ChallengeModalPro
                         </span>{' '}
                         team{challenge.solvedByCount !== 1 ? 's' : ''} have solved this challenge
                     </p>
+                )}
+
+                {/* Download file button */}
+                {challenge.fileUrl && (
+                    <div className="flex items-center gap-2 rounded-lg bg-secondary/50 p-3">
+                        <Download className="h-4 w-4 text-muted-foreground" />
+                        <span className="flex-1 text-sm text-muted-foreground">Challenge file available</span>
+                        <Button asChild variant="outline" size="sm">
+                            <a href={challenge.fileUrl} download>
+                                Download
+                            </a>
+                        </Button>
+                    </div>
                 )}
 
                 {/* Flag submission form */}

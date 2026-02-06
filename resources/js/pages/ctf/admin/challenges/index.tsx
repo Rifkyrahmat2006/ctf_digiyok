@@ -9,6 +9,9 @@ import {
     Trash2,
     Eye,
     EyeOff,
+    Upload,
+    X,
+    FileDown,
 } from 'lucide-react';
 
 import { CTFAdminLayout } from '@/layouts/ctf-admin-layout';
@@ -269,17 +272,38 @@ function CreateChallengeModal({
         is_published: true,
     });
 
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.post(route('ctf.admin.challenges.store'), {
-            ...data,
-            dependency_id: data.dependency_id === 'none' ? null : parseInt(data.dependency_id),
-        }, {
+        
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('description', data.description);
+        formData.append('category', data.category);
+        formData.append('score', data.score.toString());
+        formData.append('flag', data.flag);
+        formData.append('dependency_id', data.dependency_id === 'none' ? '' : data.dependency_id);
+        formData.append('is_published', data.is_published ? '1' : '0');
+        if (selectedFile) {
+            formData.append('attachment', selectedFile);
+        }
+
+        router.post(route('ctf.admin.challenges.store'), formData, {
+            forceFormData: true,
             onSuccess: () => {
                 reset();
+                setSelectedFile(null);
                 onOpenChange(false);
             },
         });
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedFile(file);
+        }
     };
 
     return (
@@ -380,6 +404,42 @@ function CreateChallengeModal({
                         {errors.flag && <p className="text-sm text-destructive">{errors.flag}</p>}
                     </div>
 
+                    {/* File Upload */}
+                    <div className="space-y-2">
+                        <Label>Attachment (Optional)</Label>
+                        <div className="flex items-center gap-2">
+                            <Input
+                                type="file"
+                                onChange={handleFileChange}
+                                className="hidden"
+                                id="create-file-input"
+                                accept=".zip,.rar,.7z,.tar,.gz,.txt,.pdf,.bin,.exe,.py,.c,.cpp,.java,.js"
+                            />
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => document.getElementById('create-file-input')?.click()}
+                                className="flex items-center gap-2"
+                            >
+                                <Upload className="h-4 w-4" />
+                                Choose File
+                            </Button>
+                            {selectedFile && (
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <span>{selectedFile.name}</span>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => setSelectedFile(null)}
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     <div className="flex items-center gap-2">
                         <input
                             type="checkbox"
@@ -425,19 +485,49 @@ function EditChallengeModal({
         description: challenge.description,
         category: challenge.category,
         score: challenge.score,
-        flag: challenge.flag || '', // Use raw flag if available
+        flag: challenge.flag || '',
         dependency_id: challenge.dependencyId?.toString() || 'none',
         is_published: challenge.isPublished,
     });
 
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [removeFile, setRemoveFile] = useState(false);
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.put(route('ctf.admin.challenges.update', challenge.id), {
-            ...data,
-            dependency_id: data.dependency_id === 'none' ? null : parseInt(data.dependency_id),
-        }, {
-            onSuccess: () => onOpenChange(false),
+        
+        const formData = new FormData();
+        formData.append('_method', 'PUT'); // Spoof PUT for Laravel
+        formData.append('title', data.title);
+        formData.append('description', data.description);
+        formData.append('category', data.category);
+        formData.append('score', data.score.toString());
+        formData.append('flag', data.flag);
+        formData.append('dependency_id', data.dependency_id === 'none' ? '' : data.dependency_id);
+        formData.append('is_published', data.is_published ? '1' : '0');
+        if (selectedFile) {
+            formData.append('attachment', selectedFile);
+        }
+        if (removeFile) {
+            formData.append('remove_file', '1');
+        }
+
+        router.post(route('ctf.admin.challenges.update', challenge.id), formData, {
+            forceFormData: true,
+            onSuccess: () => {
+                setSelectedFile(null);
+                setRemoveFile(false);
+                onOpenChange(false);
+            },
         });
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedFile(file);
+            setRemoveFile(false);
+        }
     };
 
     return (
@@ -447,7 +537,6 @@ function EditChallengeModal({
                     <DialogTitle>Edit Challenge</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={submit} className="space-y-4">
-                    {/* Same fields as Create, but flag optional */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="edit-title">Title</Label>
@@ -513,7 +602,7 @@ function EditChallengeModal({
                                 <SelectContent>
                                     <SelectItem value="none">None</SelectItem>
                                     {challenges
-                                        .filter((c) => c.id !== challenge.id) // Don't depend on self
+                                        .filter((c) => c.id !== challenge.id)
                                         .map((c) => (
                                             <SelectItem key={c.id} value={c.id.toString()}>
                                                 {c.title}
@@ -532,6 +621,61 @@ function EditChallengeModal({
                             onChange={(e) => setData('flag', e.target.value)}
                             placeholder="CTF{...}"
                         />
+                    </div>
+
+                    {/* File Upload */}
+                    <div className="space-y-2">
+                        <Label>Attachment</Label>
+                        {/* Current file display */}
+                        {challenge.fileName && !removeFile && !selectedFile && (
+                            <div className="flex items-center gap-2 p-2 rounded-md bg-secondary/50 text-sm">
+                                <FileDown className="h-4 w-4" />
+                                <span className="flex-1">{challenge.fileName}</span>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => setRemoveFile(true)}
+                                    className="text-destructive hover:text-destructive"
+                                >
+                                    <X className="h-4 w-4" />
+                                </Button>
+                            </div>
+                        )}
+                        {removeFile && !selectedFile && (
+                            <p className="text-sm text-muted-foreground italic">File will be removed on save</p>
+                        )}
+                        <div className="flex items-center gap-2">
+                            <Input
+                                type="file"
+                                onChange={handleFileChange}
+                                className="hidden"
+                                id="edit-file-input"
+                                accept=".zip,.rar,.7z,.tar,.gz,.txt,.pdf,.bin,.exe,.py,.c,.cpp,.java,.js"
+                            />
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => document.getElementById('edit-file-input')?.click()}
+                                className="flex items-center gap-2"
+                            >
+                                <Upload className="h-4 w-4" />
+                                {challenge.fileName ? 'Replace File' : 'Choose File'}
+                            </Button>
+                            {selectedFile && (
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <span>{selectedFile.name}</span>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => setSelectedFile(null)}
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-2">

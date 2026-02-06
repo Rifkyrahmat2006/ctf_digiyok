@@ -44,6 +44,8 @@ export interface Challenge {
     solvedByCount?: number;
     dependencyId?: number | null;
     flag?: string; // Admin only
+    fileUrl?: string | null;
+    fileName?: string | null;
     createdAt: string;
 }
 
