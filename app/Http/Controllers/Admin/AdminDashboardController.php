@@ -48,11 +48,11 @@ class AdminDashboardController extends Controller
 
         // Get top teams from service and convert to camelCase
         $topTeams = $scoreboard->take(5)->map(fn($team) => [
-            'teamId' => $team['team_id'],
-            'teamName' => $team['team_name'],
-            'totalScore' => $team['total_score'],
-            'solvedCount' => $team['solved_count'],
-            'lastSolveTime' => $team['last_solve_time'],
+            'teamId' => $team['teamId'],
+            'teamName' => $team['teamName'],
+            'totalScore' => $team['totalScore'],
+            'solvedCount' => $team['solvedCount'],
+            'lastSolveTime' => $team['lastSolveTime'],
             'rank' => $team['rank'],
         ]);
 
