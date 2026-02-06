@@ -120,9 +120,11 @@ export function ChallengeModal({ challenge, isOpen, onClose }: ChallengeModalPro
                 {challenge.fileUrl && (
                     <div className="flex items-center gap-2 rounded-lg bg-secondary/50 p-3">
                         <Download className="h-4 w-4 text-muted-foreground" />
-                        <span className="flex-1 text-sm text-muted-foreground">Challenge file available</span>
+                        <span className="flex-1 text-sm font-mono">
+                            {challenge.fileName || 'attachment'}
+                        </span>
                         <Button asChild variant="outline" size="sm">
-                            <a href={challenge.fileUrl} download>
+                            <a href={challenge.fileUrl} download={challenge.fileName}>
                                 Download
                             </a>
                         </Button>

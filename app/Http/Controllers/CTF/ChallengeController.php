@@ -37,6 +37,7 @@ class ChallengeController extends Controller
                     'isLocked' => $isLocked,
                     'solvedByCount' => $challenge->solved_by_count,
                     'fileUrl' => $challenge->file_url,
+                    'fileName' => $challenge->file_path ? basename($challenge->file_path) : null,
                 ];
             });
 
