@@ -13,6 +13,9 @@ import { CTFAdminLayout } from '@/layouts/ctf-admin-layout';
 import { StatCard } from '@/components/stat-card';
 import { CategoryBadge } from '@/components/category-badge';
 import { DashboardStats, Submission, Team, ScoreboardEntry } from '@/types/ctf';
+ 
+dayjs.extend(relativeTime);
+
 
 interface AdminDashboardProps {
     stats: DashboardStats;
