@@ -134,7 +134,12 @@ export default function WaitingPage({ countdownData: initialData }: WaitingPageP
         <div className="dark flex min-h-screen flex-col items-center justify-center bg-background p-4">
             <Head title="Waiting for Competition" />
 
-            {/* Logout button */}
+            {/* Logo - Top Left */}
+            <div className="fixed top-4 left-4 z-20">
+                <CTFLogo size="sm" />
+            </div>
+
+            {/* Logout button - Top Right */}
             <div className="fixed top-4 right-4 z-20">
                 <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" asChild>
                     <Link href="/logout" method="post" as="button">
@@ -151,11 +156,6 @@ export default function WaitingPage({ countdownData: initialData }: WaitingPageP
             </div>
 
             <div className="relative z-10 text-center">
-                {/* Logo */}
-                <div className="mb-8">
-                    <CTFLogo size="lg" />
-                </div>
-
                 {/* Event name */}
                 <h1 className="mb-4 text-2xl font-bold text-foreground md:text-4xl">
                     {data.event_name || 'CTF Competition'}

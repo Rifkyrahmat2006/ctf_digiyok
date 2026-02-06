@@ -10,9 +10,14 @@ export interface CTFUser {
     username: string;
     email: string;
     role: UserRole;
-    teamId: number | null;
+    teamId?: number | null;
     teamName?: string;
-    createdAt: string;
+    team?: {
+        id: number;
+        name: string;
+    } | null;
+    joinedAt?: string;
+    createdAt?: string;
 }
 
 export interface Team {

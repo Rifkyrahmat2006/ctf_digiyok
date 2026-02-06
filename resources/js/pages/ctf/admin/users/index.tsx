@@ -377,11 +377,11 @@ function CreateUserModal({ open, onOpenChange, teams }: { open: boolean; onOpenC
 
 function EditUserModal({ user, open, onOpenChange, teams }: { user: CTFUser; open: boolean; onOpenChange: (open: boolean) => void; teams: Pick<Team, 'id' | 'name'>[] }) {
     const { data, setData, put, processing, errors } = useForm({
-        name: user.name || '', // API might not return name if not in CTFUser type? Let's check type. CTFUser interface missing name?
+        name: user.name || '',
         username: user.username,
         email: user.email,
         role: user.role,
-        team_id: user.teamId?.toString() || '',
+        team_id: user.team?.id?.toString() || '',
     });
 
     // Note: CTFUser type needs 'name'. Assuming it has it based on AdminUserController.
