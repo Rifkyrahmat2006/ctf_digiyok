@@ -26,7 +26,7 @@ export function Countdown({ size = 'small', className, onStatusChange }: Countdo
 
     const fetchCountdown = useCallback(async () => {
         try {
-            const response = await fetch('/ctf/event/countdown');
+            const response = await fetch('/event/countdown');
             const json: CountdownData = await response.json();
             setData(json);
             setDisplaySeconds(json.remaining_seconds);

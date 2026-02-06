@@ -16,7 +16,7 @@ export default function CTFLanding() {
                     <CTFLogo size="md" />
                     <div className="flex items-center gap-4">
                         <Link
-                            href="/ctf/scoreboard"
+                            href="/scoreboard"
                             className="text-sm font-medium text-muted-foreground hover:text-foreground"
                         >
                             Scoreboard
@@ -24,16 +24,16 @@ export default function CTFLanding() {
                         {auth.user ? (
                             auth.user.role === 'admin' ? (
                                 <Button asChild>
-                                    <Link href="/ctf/admin/dashboard">Admin Dashboard</Link>
+                                    <Link href="/admin/dashboard">Admin Dashboard</Link>
                                 </Button>
                             ) : (
                                 <Button asChild>
-                                    <Link href="/ctf/challenges">Competition Area</Link>
+                                    <Link href="/challenges">Competition Area</Link>
                                 </Button>
                             )
                         ) : (
                             <Button asChild>
-                                <Link href="/ctf/login">Login</Link>
+                                <Link href="/login">Login</Link>
                             </Button>
                         )}
                     </div>
@@ -66,13 +66,13 @@ export default function CTFLanding() {
                     {/* CTA Buttons */}
                     <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                         <Button size="lg" asChild className="gap-2 text-lg">
-                            <Link href="/ctf/login">
+                            <Link href="/login">
                                 Join Competition
                                 <ArrowRight className="h-5 w-5" />
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild className="text-lg">
-                            <Link href="/ctf/scoreboard">View Scoreboard</Link>
+                            <Link href="/scoreboard">View Scoreboard</Link>
                         </Button>
                     </div>
                 </div>

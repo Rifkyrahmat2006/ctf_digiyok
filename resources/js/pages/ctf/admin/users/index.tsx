@@ -67,7 +67,7 @@ export default function AdminUsers({ users, teams }: AdminUsersProps) {
     };
 
     return (
-        <CTFAdminLayout title="Users Management" currentPath="/ctf/admin/users">
+        <CTFAdminLayout title="Users Management" currentPath="/admin/users">
             <Head title="Users Management" />
             
             {/* Header */}

@@ -98,7 +98,7 @@ export default function AdminSubmissions({ submissions, stats, websocketUrl }: A
     // ... search logic (omitted/unchanged)
 
     return (
-        <CTFAdminLayout title="Submission Log" currentPath="/ctf/admin/submissions">
+        <CTFAdminLayout title="Submission Log" currentPath="/admin/submissions">
             <Head title="Submission Log" />
 
             {/* Stats */}

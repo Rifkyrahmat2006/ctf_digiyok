@@ -26,14 +26,14 @@ export default function WaitingPage({ countdownData: initialData }: WaitingPageP
 
     const fetchCountdown = useCallback(async () => {
         try {
-            const response = await fetch('/ctf/event/countdown');
+            const response = await fetch('/event/countdown');
             const json: CountdownData = await response.json();
             setData(json);
             setDisplaySeconds(json.seconds_until_start);
 
             // If event is now running, redirect to challenges
             if (json.status === 'running') {
-                router.visit('/ctf/challenges');
+                router.visit('/challenges');
             }
         } catch (error) {
             console.error('Failed to fetch countdown:', error);

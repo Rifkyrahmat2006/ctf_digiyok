@@ -17,11 +17,11 @@ interface WriteupPageProps {
 
 export default function WriteupPage({ challenge, writeup }: WriteupPageProps) {
     return (
-        <CTFLayout title={`Writeup: ${challenge.title}`} currentPath="/ctf/challenges">
+        <CTFLayout title={`Writeup: ${challenge.title}`} currentPath="/challenges">
             <div className="mx-auto max-w-4xl space-y-6">
                 {/* Header */}
                 <div className="flex items-center gap-4">
-                    <Link href="/ctf/challenges">
+                    <Link href="/challenges">
                         <Button variant="ghost" size="sm">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Kembali

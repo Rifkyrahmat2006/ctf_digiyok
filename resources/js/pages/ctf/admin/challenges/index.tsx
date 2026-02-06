@@ -78,7 +78,7 @@ export default function AdminChallenges({ challenges }: AdminChallengesProps) {
     return (
         <CTFAdminLayout
             title="Challenges Management"
-            currentPath="/ctf/admin/challenges"
+            currentPath="/admin/challenges"
         >
             <Head title="Challenges Management" />
             

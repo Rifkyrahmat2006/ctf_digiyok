@@ -28,7 +28,7 @@ export default function CTFLogin() {
             {/* Back to home link */}
             <div className="absolute left-4 top-4">
                 <Link
-                    href="/ctf"
+                    href="/"
                     className="text-sm text-muted-foreground hover:text-foreground"
                 >
                     ← Back to Home

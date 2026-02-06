@@ -109,7 +109,7 @@ export default function CTFScoreboard({ initialScoreboard, websocketUrl }: CTFSc
     };
 
     return (
-        <CTFLayout title="Scoreboard" currentPath="/ctf/scoreboard">
+        <CTFLayout title="Scoreboard" currentPath="/scoreboard">
             {/* Page Header */}
             <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>

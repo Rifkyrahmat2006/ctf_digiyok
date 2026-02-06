@@ -38,7 +38,7 @@ export function WriteupEditor({ challengeId, initialContent, initialUpdatedAt }:
         try {
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
             
-            const response = await fetch(`/ctf/writeup/${challengeId}`, {
+            const response = await fetch(`/writeup/${challengeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

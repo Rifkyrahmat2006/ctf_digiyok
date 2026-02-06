@@ -28,13 +28,13 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-    { label: 'Dashboard', href: '/ctf/admin/dashboard', icon: LayoutDashboard },
-    { label: 'Users', href: '/ctf/admin/users', icon: Users },
-    { label: 'Teams', href: '/ctf/admin/teams', icon: UsersRound },
-    { label: 'Challenges', href: '/ctf/admin/challenges', icon: Flag },
-    { label: 'Submissions', href: '/ctf/admin/submissions', icon: FileText },
-    { label: 'Writeups', href: '/ctf/admin/writeups', icon: PenLine },
-    { label: 'Events', href: '/ctf/admin/events', icon: Calendar },
+    { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { label: 'Users', href: '/admin/users', icon: Users },
+    { label: 'Teams', href: '/admin/teams', icon: UsersRound },
+    { label: 'Challenges', href: '/admin/challenges', icon: Flag },
+    { label: 'Submissions', href: '/admin/submissions', icon: FileText },
+    { label: 'Writeups', href: '/admin/writeups', icon: PenLine },
+    { label: 'Events', href: '/admin/events', icon: Calendar },
 ];
 
 interface CTFAdminLayoutProps extends PropsWithChildren {

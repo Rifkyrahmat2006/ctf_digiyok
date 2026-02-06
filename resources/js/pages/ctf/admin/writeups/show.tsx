@@ -31,12 +31,12 @@ export default function AdminWriteupShow({ writeup }: AdminWriteupShowProps) {
     };
 
     return (
-        <CTFAdminLayout title="View Writeup" currentPath="/ctf/admin/writeups">
+        <CTFAdminLayout title="View Writeup" currentPath="/admin/writeups">
             <Head title={`Writeup: ${writeup.challengeTitle}`} />
 
             <div className="mx-auto max-w-4xl space-y-6">
                 {/* Back Button */}
-                <Link href="/ctf/admin/writeups">
+                <Link href="/admin/writeups">
                     <Button variant="ghost" size="sm">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to Writeups

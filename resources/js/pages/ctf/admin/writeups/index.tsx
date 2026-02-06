@@ -62,7 +62,7 @@ export default function AdminWriteups({ writeups, challenges }: AdminWriteupsPro
     };
 
     return (
-        <CTFAdminLayout title="Writeups" currentPath="/ctf/admin/writeups">
+        <CTFAdminLayout title="Writeups" currentPath="/admin/writeups">
             <Head title="Writeups Management" />
 
             {/* Header */}
@@ -155,7 +155,7 @@ export default function AdminWriteups({ writeups, challenges }: AdminWriteupsPro
                                         </td>
                                         <td className="px-4 py-3 text-right">
                                             <Button asChild variant="ghost" size="sm">
-                                                <Link href={`/ctf/admin/writeups/${writeup.id}`}>
+                                                <Link href={`/admin/writeups/${writeup.id}`}>
                                                     <Eye className="mr-2 h-4 w-4" />
                                                     View
                                                 </Link>

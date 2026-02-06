@@ -27,7 +27,7 @@ interface AdminDashboardProps {
 export default function AdminDashboard({ stats, recentSubmissions, topTeams }: AdminDashboardProps) {
 
     return (
-        <CTFAdminLayout title="Dashboard" currentPath="/ctf/admin/dashboard">
+        <CTFAdminLayout title="Dashboard" currentPath="/admin/dashboard">
             {/* Event Countdown */}
             <div className="mb-8 flex justify-center">
                 <Countdown size="large" />

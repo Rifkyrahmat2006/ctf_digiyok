@@ -84,7 +84,7 @@ export default function CTFChallenges({ challenges }: CTFChallengesProps) {
         .reduce((sum, c) => sum + c.score, 0);
 
     return (
-        <CTFLayout title="Challenges" currentPath="/ctf/challenges">
+        <CTFLayout title="Challenges" currentPath="/challenges">
             {/* Page Header */}
             <div className="mb-8 space-y-4">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

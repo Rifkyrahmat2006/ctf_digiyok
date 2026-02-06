@@ -86,7 +86,7 @@ export default function AdminEvents({ events, activeEventId }: AdminEventsProps)
     };
 
     return (
-        <CTFAdminLayout title="Events Management" currentPath="/ctf/admin/events">
+        <CTFAdminLayout title="Events Management" currentPath="/admin/events">
             <Head title="Events Management" />
 
             {/* Header */}

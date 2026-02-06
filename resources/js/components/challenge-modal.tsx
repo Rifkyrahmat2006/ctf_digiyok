@@ -197,7 +197,7 @@ export function ChallengeModal({ challenge, isOpen, onClose, eventEnded = false 
                 {/* Writeup button */}
                 <div className="flex justify-end border-t border-border pt-4">
                     <Button asChild variant="outline">
-                        <Link href={`/ctf/writeup/${challenge.id}`}>
+                        <Link href={`/writeup/${challenge.id}`}>
                             <PenLine className="mr-2 h-4 w-4" />
                             Writeup
                         </Link>

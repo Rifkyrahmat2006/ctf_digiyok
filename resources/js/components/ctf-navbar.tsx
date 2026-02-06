@@ -19,9 +19,9 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-    { label: 'Challenges', href: '/ctf/challenges', icon: Flag },
-    { label: 'Scoreboard', href: '/ctf/scoreboard', icon: Trophy },
-    { label: 'Team', href: '/ctf/team', icon: Users },
+    { label: 'Challenges', href: '/challenges', icon: Flag },
+    { label: 'Scoreboard', href: '/scoreboard', icon: Trophy },
+    { label: 'Team', href: '/team', icon: Users },
 ];
 
 interface CTFNavbarProps {
@@ -40,7 +40,7 @@ export function CTFNavbar({ currentPath }: CTFNavbarProps) {
         <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <nav className="container mx-auto flex h-16 items-center justify-between px-4">
                 {/* Logo */}
-                <Link href="/ctf" className="flex items-center">
+                <Link href="/" className="flex items-center">
                     <CTFLogo size="md" />
                 </Link>
 
@@ -85,7 +85,7 @@ export function CTFNavbar({ currentPath }: CTFNavbarProps) {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-56">
                                 <DropdownMenuItem asChild>
-                                    <Link href="/ctf/team" className="flex items-center gap-2">
+                                    <Link href="/team" className="flex items-center gap-2">
                                         <Users className="h-4 w-4" />
                                         My Team
                                     </Link>
@@ -101,7 +101,7 @@ export function CTFNavbar({ currentPath }: CTFNavbarProps) {
                         </DropdownMenu>
                     ) : (
                         <Button asChild>
-                            <Link href="/ctf/login">Login</Link>
+                            <Link href="/login">Login</Link>
                         </Button>
                     )}
                 </div>
@@ -171,7 +171,7 @@ export function CTFNavbar({ currentPath }: CTFNavbarProps) {
                         ) : (
                             <div className="mt-4 px-4">
                                  <Button asChild className="w-full">
-                                    <Link href="/ctf/login">Login</Link>
+                                    <Link href="/login">Login</Link>
                                 </Button>
                             </div>
                         )}

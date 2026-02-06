@@ -53,7 +53,7 @@ export default function AdminTeams({ teams }: AdminTeamsProps) {
     };
 
     return (
-        <CTFAdminLayout title="Teams Management" currentPath="/ctf/admin/teams">
+        <CTFAdminLayout title="Teams Management" currentPath="/admin/teams">
             <Head title="Teams Management" />
             
             {/* Header */}

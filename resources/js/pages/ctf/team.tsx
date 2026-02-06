@@ -48,7 +48,7 @@ export default function CTFTeam({ team, members, solvedChallenges }: CTFTeamProp
     const sortedSolved = [...solvedChallenges].sort((a, b) => new Date(b.solvedAt).getTime() - new Date(a.solvedAt).getTime());
 
     return (
-        <CTFLayout title="Team" currentPath="/ctf/team">
+        <CTFLayout title="Team" currentPath="/team">
             {/* Team Header */}
             <div className="mb-8 rounded-xl border border-border bg-card p-6">
                 <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
