@@ -151,7 +151,7 @@ export default function AdminUsers({ users, teams }: AdminUsersProps) {
                                         </td>
                                         <td className="px-4 py-3">
                                             <span className="text-sm">
-                                                {user.teamName || '-'}
+                                                {user.team?.name || '-'}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-sm text-muted-foreground">
