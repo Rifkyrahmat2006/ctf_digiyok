@@ -19,10 +19,12 @@ class AdminSubmissionController extends Controller
                 'teamName' => $sub->team->name,
                 'teamId' => $sub->team_id,
                 'challengeName' => $sub->challenge->title,
+                'challengeTitle' => $sub->challenge->title,
+                'category' => $sub->challenge->category,
                 'userName' => $sub->user->username,
-                'submittedFlag' => $sub->submitted_flag ?? 'N/A', // Show raw flag
+                'submittedFlag' => $sub->submitted_flag ?? 'N/A',
                 'isCorrect' => $sub->is_correct,
-                'timestamp' => $sub->created_at->toIso8601String(),
+                'createdAt' => $sub->created_at->toIso8601String(),
             ]);
 
         $stats = [
