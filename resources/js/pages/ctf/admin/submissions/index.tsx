@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { CheckCircle2, Filter, Search, XCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CheckCircle2, Filter, Search, XCircle, ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react';
 import { Head, Link, router } from '@inertiajs/react';
 import { CTFAdminLayout } from '@/layouts/ctf-admin-layout';
 import { CategoryBadge } from '@/components/category-badge';
@@ -116,8 +116,20 @@ export default function AdminSubmissions({ submissions, stats, websocketUrl }: A
                     <p className="text-2xl font-bold text-red-400">{realtimeStats.incorrect}</p>
                 </div>
             </div>
-
-            {/* Submissions Table */}
+ 
+                 <div className="mb-4 flex justify-end">
+                     <Button
+                         variant="outline"
+                         size="sm"
+                         onClick={() => router.reload()}
+                         className="flex items-center gap-2"
+                     >
+                         <RefreshCcw className="h-4 w-4" />
+                         Refresh Data
+                     </Button>
+                 </div>
+ 
+             {/* Submissions Table */}
             <div className="rounded-xl border border-border bg-card overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full">

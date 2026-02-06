@@ -4,6 +4,8 @@ import { clsx } from 'clsx';
 import dayjs from 'dayjs';
 import {
     Edit,
+    Eye,
+    EyeOff,
     Key,
     MoreHorizontal,
     Plus,
@@ -235,6 +237,8 @@ function CreateUserModal({ open, onOpenChange, teams }: { open: boolean; onOpenC
         team_id: '',
     });
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('ctf.admin.users.store'), {
@@ -291,14 +295,30 @@ function CreateUserModal({ open, onOpenChange, teams }: { open: boolean; onOpenC
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="create-password">Password</Label>
-                        <Input
-                            id="create-password"
-                            type="password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                            required
-                        />
+                        <div className="relative">
+                            <Input
+                                id="create-password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                placeholder="Password"
+                                required
+                                className="pr-10"
+                            />
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                ) : (
+                                    <Eye className="h-4 w-4 text-muted-foreground" />
+                                )}
+                            </Button>
+                        </div>
                         {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                     </div>
                     <div className="space-y-2">
