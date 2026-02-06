@@ -29,6 +29,7 @@ class AdminChallengeController extends Controller
                 'category' => $challenge->category,
                 'score' => $challenge->score,
                 'isPublished' => $challenge->is_published,
+                'requiresWriteup' => $challenge->requires_writeup,
                 'solvedByCount' => $challenge->solved_by_count,
                 'flag' => $challenge->flag ?? 'N/A', // Expose raw flag
                 'fileUrl' => $challenge->file_url,
@@ -50,6 +51,7 @@ class AdminChallengeController extends Controller
             'flag' => 'required|string', // Raw flag input
             'dependency_id' => 'nullable|exists:challenges,id',
             'is_published' => 'boolean',
+            'requires_writeup' => 'boolean',
             'attachment' => 'nullable|file|max:10240|mimes:zip,rar,7z,tar,gz,txt,pdf,bin,exe,py,c,cpp,java,js',
         ]);
 
@@ -79,6 +81,7 @@ class AdminChallengeController extends Controller
             'flag' => 'nullable|string', // Optional if updating other fields
             'dependency_id' => 'nullable|exists:challenges,id',
             'is_published' => 'boolean',
+            'requires_writeup' => 'boolean',
             'attachment' => 'nullable|file|max:10240|mimes:zip,rar,7z,tar,gz,txt,pdf,bin,exe,py,c,cpp,java,js',
             'remove_file' => 'nullable|boolean',
         ]);

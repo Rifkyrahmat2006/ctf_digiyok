@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { clsx } from 'clsx';
-import { CheckCircle2, Download, Flag, Loader2, X } from 'lucide-react';
-import { router } from '@inertiajs/react';
+import { CheckCircle2, Download, Flag, Loader2, PenLine, X } from 'lucide-react';
+import { Link, router } from '@inertiajs/react';
 import type { Challenge } from '@/types';
 import { CategoryBadge } from './category-badge';
 import { ScoreBadge } from './score-badge';
@@ -193,6 +193,16 @@ export function ChallengeModal({ challenge, isOpen, onClose, eventEnded = false 
                         Your team has already solved this challenge!
                     </div>
                 )}
+
+                {/* Writeup button */}
+                <div className="flex justify-end border-t border-border pt-4">
+                    <Button asChild variant="outline">
+                        <Link href={`/ctf/writeup/${challenge.id}`}>
+                            <PenLine className="mr-2 h-4 w-4" />
+                            Writeup
+                        </Link>
+                    </Button>
+                </div>
             </DialogContent>
         </Dialog>
     );

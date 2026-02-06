@@ -45,6 +45,7 @@ export interface Challenge {
     category: ChallengeCategory;
     score: number;
     isPublished: boolean;
+    requiresWriteup?: boolean;
     isSolved?: boolean;
     solvedByCount?: number;
     dependencyId?: number | null;
@@ -63,6 +64,12 @@ export interface Submission {
     isCorrect: boolean;
     submittedFlag?: string; // Admin only
     createdAt: string;
+}
+
+export interface Writeup {
+    id: number;
+    content: string;
+    updatedAt: string;
 }
 
 export interface ScoreboardEntry {

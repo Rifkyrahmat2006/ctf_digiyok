@@ -6,12 +6,14 @@ use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminSubmissionController;
 use App\Http\Controllers\Admin\AdminTeamController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminWriteupController;
 use App\Http\Controllers\CTF\ChallengeController;
 use App\Http\Controllers\CTF\EventController;
 use App\Http\Controllers\CTF\ScoreboardController;
 use App\Http\Controllers\CTF\SubmissionController;
 use App\Http\Controllers\CTF\TeamController;
 use App\Http\Controllers\CTF\WaitingController;
+use App\Http\Controllers\CTF\WriteupController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -42,6 +44,10 @@ Route::prefix('ctf')->name('ctf.')->group(function () {
         Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
         Route::get('/scoreboard', [ScoreboardController::class, 'index'])->name('scoreboard');
         Route::get('/team', [TeamController::class, 'show'])->name('team');
+        
+        // Writeup routes
+        Route::get('/writeup/{challenge}', [WriteupController::class, 'show'])->name('writeup');
+        Route::put('/writeup/{challenge}', [WriteupController::class, 'upsert'])->name('writeup.upsert');
     });
     
     // Admin pages (Auth + Admin)
@@ -70,6 +76,10 @@ Route::prefix('ctf')->name('ctf.')->group(function () {
         
         // Submissions
         Route::get('/submissions', [AdminSubmissionController::class, 'index'])->name('submissions');
+        
+        // Writeups
+        Route::get('/writeups', [AdminWriteupController::class, 'index'])->name('writeups');
+        Route::get('/writeups/{writeup}', [AdminWriteupController::class, 'show'])->name('writeups.show');
         
         // Events
         Route::get('/events', [AdminEventController::class, 'index'])->name('events');

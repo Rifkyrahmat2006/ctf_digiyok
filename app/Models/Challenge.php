@@ -21,11 +21,13 @@ class Challenge extends Model
         'file_path',
         'dependency_id',
         'is_published',
+        'requires_writeup',
     ];
 
     protected $casts = [
         'score' => 'integer',
         'is_published' => 'boolean',
+        'requires_writeup' => 'boolean',
     ];
 
     /**

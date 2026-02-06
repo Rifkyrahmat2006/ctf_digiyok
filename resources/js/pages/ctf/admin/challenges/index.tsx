@@ -270,6 +270,7 @@ function CreateChallengeModal({
         flag: '',
         dependency_id: 'none' as string,
         is_published: true,
+        requires_writeup: false,
     });
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -285,6 +286,7 @@ function CreateChallengeModal({
         formData.append('flag', data.flag);
         formData.append('dependency_id', data.dependency_id === 'none' ? '' : data.dependency_id);
         formData.append('is_published', data.is_published ? '1' : '0');
+        formData.append('requires_writeup', data.requires_writeup ? '1' : '0');
         if (selectedFile) {
             formData.append('attachment', selectedFile);
         }
@@ -451,6 +453,17 @@ function CreateChallengeModal({
                         <Label htmlFor="is_published">Publish immediately</Label>
                     </div>
 
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            id="requires_writeup"
+                            checked={data.requires_writeup}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('requires_writeup', e.target.checked)}
+                            className="rounded border-border bg-background"
+                        />
+                        <Label htmlFor="requires_writeup">Requires Writeup</Label>
+                    </div>
+
                     <DialogFooter>
                         <Button
                             type="button"
@@ -488,6 +501,7 @@ function EditChallengeModal({
         flag: challenge.flag || '',
         dependency_id: challenge.dependencyId?.toString() || 'none',
         is_published: challenge.isPublished,
+        requires_writeup: challenge.requiresWriteup ?? false,
     });
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -505,6 +519,7 @@ function EditChallengeModal({
         formData.append('flag', data.flag);
         formData.append('dependency_id', data.dependency_id === 'none' ? '' : data.dependency_id);
         formData.append('is_published', data.is_published ? '1' : '0');
+        formData.append('requires_writeup', data.requires_writeup ? '1' : '0');
         if (selectedFile) {
             formData.append('attachment', selectedFile);
         }
@@ -687,6 +702,17 @@ function EditChallengeModal({
                             className="rounded border-border bg-background"
                         />
                         <Label htmlFor="edit-is_published">Published</Label>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            id="edit-requires_writeup"
+                            checked={data.requires_writeup}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('requires_writeup', e.target.checked)}
+                            className="rounded border-border bg-background"
+                        />
+                        <Label htmlFor="edit-requires_writeup">Requires Writeup</Label>
                     </div>
 
                     <DialogFooter>

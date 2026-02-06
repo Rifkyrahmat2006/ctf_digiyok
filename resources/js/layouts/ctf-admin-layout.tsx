@@ -8,6 +8,7 @@ import {
     Flag,
     LayoutDashboard,
     LogOut,
+    PenLine,
     Settings,
     Users,
     UsersRound,
@@ -32,6 +33,7 @@ const navItems: NavItem[] = [
     { label: 'Teams', href: '/ctf/admin/teams', icon: UsersRound },
     { label: 'Challenges', href: '/ctf/admin/challenges', icon: Flag },
     { label: 'Submissions', href: '/ctf/admin/submissions', icon: FileText },
+    { label: 'Writeups', href: '/ctf/admin/writeups', icon: PenLine },
     { label: 'Events', href: '/ctf/admin/events', icon: Calendar },
 ];
 
