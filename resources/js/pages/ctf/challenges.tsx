@@ -4,6 +4,7 @@ import { CTFLayout } from '@/layouts/ctf-layout';
 import { ChallengeCard } from '@/components/challenge-card';
 import { ChallengeModal } from '@/components/challenge-modal';
 import { CategoryBadge } from '@/components/category-badge';
+import { Countdown } from '@/components/countdown';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import type { Challenge, ChallengeCategory } from '@/types';
@@ -26,6 +27,7 @@ export default function CTFChallenges({ challenges }: CTFChallengesProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [eventEnded, setEventEnded] = useState(false);
 
     // Filter challenges based on category and search
     // challenges prop already contains only published challenges for participants usually, 
@@ -71,6 +73,10 @@ export default function CTFChallenges({ challenges }: CTFChallengesProps) {
         setSelectedChallenge(null);
     };
 
+    const handleEventStatusChange = (status: string) => {
+        setEventEnded(status === 'ended');
+    };
+
     // Calculate team stats
     const solvedCount = challenges.filter((c) => c.isSolved).length;
     const totalScore = challenges
@@ -88,16 +94,19 @@ export default function CTFChallenges({ challenges }: CTFChallengesProps) {
                             Solve challenges to earn points for your team
                         </p>
                     </div>
-                    <div className="flex items-center gap-4 rounded-lg border border-border bg-card px-4 py-3">
-                        <Trophy className="h-5 w-5 text-primary" />
-                        <div>
-                            <p className="text-sm text-muted-foreground">Team Score</p>
-                            <p className="text-xl font-bold">
-                                {totalScore}{' '}
-                                <span className="text-sm font-normal text-muted-foreground">
-                                    pts ({solvedCount}/{challenges.length} solved)
-                                </span>
-                            </p>
+                    <div className="flex items-center gap-4">
+                        <Countdown size="small" onStatusChange={handleEventStatusChange} />
+                        <div className="flex items-center gap-4 rounded-lg border border-border bg-card px-4 py-3">
+                            <Trophy className="h-5 w-5 text-primary" />
+                            <div>
+                                <p className="text-sm text-muted-foreground">Team Score</p>
+                                <p className="text-xl font-bold">
+                                    {totalScore}{' '}
+                                    <span className="text-sm font-normal text-muted-foreground">
+                                        pts ({solvedCount}/{challenges.length} solved)
+                                    </span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -181,6 +190,7 @@ export default function CTFChallenges({ challenges }: CTFChallengesProps) {
                 challenge={selectedChallenge}
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
+                eventEnded={eventEnded}
             />
         </CTFLayout>
     );

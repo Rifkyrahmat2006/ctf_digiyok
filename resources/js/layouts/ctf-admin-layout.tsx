@@ -1,6 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { clsx } from 'clsx';
 import {
+    Calendar,
     ChevronLeft,
     ChevronRight,
     FileText,
@@ -31,6 +32,7 @@ const navItems: NavItem[] = [
     { label: 'Teams', href: '/ctf/admin/teams', icon: UsersRound },
     { label: 'Challenges', href: '/ctf/admin/challenges', icon: Flag },
     { label: 'Submissions', href: '/ctf/admin/submissions', icon: FileText },
+    { label: 'Events', href: '/ctf/admin/events', icon: Calendar },
 ];
 
 interface CTFAdminLayoutProps extends PropsWithChildren {

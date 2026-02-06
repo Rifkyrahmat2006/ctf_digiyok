@@ -12,6 +12,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { CTFAdminLayout } from '@/layouts/ctf-admin-layout';
 import { StatCard } from '@/components/stat-card';
 import { CategoryBadge } from '@/components/category-badge';
+import { Countdown } from '@/components/countdown';
 import { DashboardStats, Submission, Team, ScoreboardEntry } from '@/types/ctf';
  
 dayjs.extend(relativeTime);
@@ -27,6 +28,11 @@ export default function AdminDashboard({ stats, recentSubmissions, topTeams }: A
 
     return (
         <CTFAdminLayout title="Dashboard" currentPath="/ctf/admin/dashboard">
+            {/* Event Countdown */}
+            <div className="mb-8 flex justify-center">
+                <Countdown size="large" />
+            </div>
+
             {/* Stats Grid */}
             <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <StatCard

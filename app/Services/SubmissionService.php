@@ -14,7 +14,8 @@ class SubmissionService
 {
     public function __construct(
         protected FlagService $flagService,
-        protected ScoreboardService $scoreboardService
+        protected ScoreboardService $scoreboardService,
+        protected EventService $eventService
     ) {}
 
     /**
@@ -24,6 +25,13 @@ class SubmissionService
      */
     public function submit(Team $team, Challenge $challenge, string $flag, User $user): array
     {
+        // Check if event has ended
+        if ($this->eventService->hasEventEnded()) {
+            return [
+                'success' => false,
+                'message' => "Time's up! The competition has ended.",
+            ];
+        }
         // Check rate limit (1 submission per 3 seconds per team)
         $rateLimitKey = "submission:{$team->id}";
         

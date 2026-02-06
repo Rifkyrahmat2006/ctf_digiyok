@@ -19,6 +19,7 @@ interface ChallengeModalProps {
     challenge: Challenge | null;
     isOpen: boolean;
     onClose: () => void;
+    eventEnded?: boolean;
 }
 
 interface SubmitResponse {
@@ -26,7 +27,7 @@ interface SubmitResponse {
     message: string;
 }
 
-export function ChallengeModal({ challenge, isOpen, onClose }: ChallengeModalProps) {
+export function ChallengeModal({ challenge, isOpen, onClose, eventEnded = false }: ChallengeModalProps) {
     const [flag, setFlag] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null);
@@ -35,7 +36,7 @@ export function ChallengeModal({ challenge, isOpen, onClose }: ChallengeModalPro
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!flag.trim() || isSubmitting) return;
+        if (!flag.trim() || isSubmitting || eventEnded) return;
 
         setIsSubmitting(true);
         setSubmitResult(null);
@@ -132,7 +133,7 @@ export function ChallengeModal({ challenge, isOpen, onClose }: ChallengeModalPro
                 )}
 
                 {/* Flag submission form */}
-                {!challenge.isSolved && (
+                {!challenge.isSolved && !eventEnded && (
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="flex gap-2">
                             <div className="relative flex-1">
