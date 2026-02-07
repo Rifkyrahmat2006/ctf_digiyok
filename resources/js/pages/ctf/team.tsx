@@ -1,6 +1,9 @@
 import { clsx } from 'clsx';
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { CheckCircle2, Flag, Medal, Trophy, User, Users } from 'lucide-react';
+
+dayjs.extend(relativeTime);
 import { CTFLayout } from '@/layouts/ctf-layout';
 import type { ChallengeCategory } from '@/types/ctf';
 import { CategoryBadge } from '@/components/category-badge';
