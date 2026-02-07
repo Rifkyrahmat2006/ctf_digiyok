@@ -41,6 +41,7 @@ class TeamController extends Controller
         $teamData = [
             'id' => $team->id,
             'name' => $team->name,
+            'code' => $team->code,
             'memberCount' => $team->member_count,
             'solvedCount' => $team->solved_count,
             'score' => $team->total_score,
